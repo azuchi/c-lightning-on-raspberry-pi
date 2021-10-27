@@ -18,7 +18,6 @@ services:
     container_name: lightningd
     image: elementsproject/lightningd:v0.10.0
 #    image: azuchi/lightningd:v0.10.1
-#    restart: on-failure
     command:
       - --bitcoin-rpcconnect=$BITCOIN_RPC_HOST
       - --bitcoin-rpcport=$BITCOIN_RPC_PORT
@@ -28,10 +27,10 @@ services:
       - --alias=$LIGHTNING_ALIAS
       - --rgb=$LIGHTNING_RGB
       - --log-level=debug
-#    network_mode: "host"
     expose:
       - "9735"
     ports:
       - "0.0.0.0:9735:9735"
     volumes:
-      - ${PWD}/lightningd:/data/.lightning
+      - ${PWD}/lightningd:/root/.lightning
+      - ${PWD}/bitcoin:/etc/bitcoin
