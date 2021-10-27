@@ -1,5 +1,6 @@
 .env
 lightningd/*
 !lightningd/.gitkeep
+!lightningd/bitcoin/.gitkeep
 bitcoin/*
 !bitcoin/.gitkeep
