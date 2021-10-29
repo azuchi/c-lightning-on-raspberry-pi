@@ -1,0 +1,6 @@
+ControlPort 9051
+CookieAuthentication 1
+
+# c-lightning Hidden Service
+HiddenServiceDir /var/lib/tor/lightningd
+HiddenServicePort 1234 127.0.0.1:9735

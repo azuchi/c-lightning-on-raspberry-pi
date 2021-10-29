@@ -9,4 +9,6 @@ bitcoin/*
 
 tor/*
 !tor/data/.gitkeep
+!tor/data/lightningd/.gitkeep
 !tor/run/.gitkeep
+!tor/data/torrc
