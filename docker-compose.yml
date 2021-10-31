@@ -1,23 +1,28 @@
 version: '3.7'
 
 services:
-#  tor:
-#    container_name: tor
-#    image: lncm/tor:0.4.5.7@sha256:a83e0d9fd1a35adf025f2f34237ec1810e2a59765988dce1dfb222ca8ef6583c
-#    restart: on-failure
-#    volumes:
-#      - ${PWD}/tor/torrc:/etc/tor/torrc
-#      - ${PWD}/tor/data:/var/lib/tor/
-#      - ${PWD}/tor/run:/var/run/tor/
-#    ports:
-#      - "127.0.0.1:$TOR_PROXY_PORT:$TOR_PROXY_PORT"
-#    networks:
-#      default:
-#        ipv4_address: $TOR_PROXY_IP
+  tor:
+    image: lncm/tor:0.4.6.7
+    container_name: tor
+    volumes:
+      - ${PWD}/tor/data:/etc/tor
+      - ${PWD}/tor/data:/var/lib/tor
+      - ${PWD}/tor/run:/var/run/tor
+    restart: on-failure
+    network_mode: host
+    expose:
+      - "9050"
+      - "9051"
+    stop_grace_period: 10m30s
   lightningd:
     container_name: lightningd
-    image: elementsproject/lightningd:v0.10.0
-#    image: azuchi/lightningd:v0.10.1
+#    image: elementsproject/lightningd:v0.10.0
+    image: azuchi/lightningd:v0.10.1
+    depends_on:
+      - tor
+    restart: on-failure
+    stop_grace_period: 5m30s
+    network_mode: host
     command:
       - --bitcoin-rpcconnect=$BITCOIN_RPC_HOST
       - --bitcoin-rpcport=$BITCOIN_RPC_PORT
@@ -27,10 +32,12 @@ services:
       - --alias=$LIGHTNING_ALIAS
       - --rgb=$LIGHTNING_RGB
       - --log-level=debug
+      - --proxy=127.0.0.1:9050
+      - --bind-addr=127.0.0.1:9735
+      - --addr=statictor:127.0.0.1:9051
+      - --always-use-proxy=true
     expose:
       - "9735"
-    ports:
-      - "0.0.0.0:9735:9735"
     volumes:
       - ${PWD}/lightningd:/root/.lightning
       - ${PWD}/bitcoin:/etc/bitcoin
