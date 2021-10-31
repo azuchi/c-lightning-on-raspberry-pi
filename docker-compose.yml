@@ -24,13 +24,13 @@ services:
     stop_grace_period: 5m30s
     network_mode: host
     environment:
-      - LIGHTNINGD_NETWORK=bitcoin
+      - LIGHTNINGD_NETWORK=$BITCOIN_NETWORK
     command:
       - --bitcoin-rpcconnect=$BITCOIN_RPC_HOST
       - --bitcoin-rpcport=$BITCOIN_RPC_PORT
       - --bitcoin-rpcuser=$BITCOIN_RPC_USER
       - --bitcoin-rpcpassword=$BITCOIN_RPC_PASSWORD
-      - --network=bitcoin
+      - --network=$BITCOIN_NETWORK
       - --alias=$LIGHTNING_ALIAS
       - --rgb=$LIGHTNING_RGB
       - --log-level=debug
