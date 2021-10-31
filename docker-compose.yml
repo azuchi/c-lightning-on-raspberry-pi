@@ -23,6 +23,8 @@ services:
     restart: on-failure
     stop_grace_period: 5m30s
     network_mode: host
+    environment:
+      - LIGHTNINGD_NETWORK=bitcoin
     command:
       - --bitcoin-rpcconnect=$BITCOIN_RPC_HOST
       - --bitcoin-rpcport=$BITCOIN_RPC_PORT
